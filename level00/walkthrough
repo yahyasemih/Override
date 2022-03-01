@@ -1,0 +1,21 @@
+In this level, the program is waiting for a value from the user using `scanf`
+
+   0x080484c1 <+45>:	mov    eax,0x804862c ; "Password:"
+   0x080484c6 <+50>:	mov    DWORD PTR [esp],eax
+   0x080484c9 <+53>:	call   0x8048380 <printf@plt>
+   0x080484ce <+58>:	mov    eax,0x8048636 ;  "%d"
+   0x080484d3 <+63>:	lea    edx,[esp+0x1c] ; int to read into
+   0x080484d7 <+67>:	mov    DWORD PTR [esp+0x4],edx
+   0x080484db <+71>:	mov    DWORD PTR [esp],eax
+   0x080484de <+74>:	call   0x80483d0 <__isoc99_scanf@plt>
+
+if this value is equal to 5276 the user is authenticated and access the shell
+
+   0x080484e3 <+79>:	mov    eax,DWORD PTR [esp+0x1c] ; int to read into
+   0x080484e7 <+83>:	cmp    eax,0x149c ; 5276
+   0x080484ec <+88>:	jne    0x804850d <main+121>
+   0x080484ee <+90>:	mov    DWORD PTR [esp],0x8048639 ; "\nAuthenticated!"
+   0x080484f5 <+97>:	call   0x8048390 <puts@plt>
+   0x080484fa <+102>:	mov    DWORD PTR [esp],0x8048649 ; "/bin/sh"
+   0x08048501 <+109>:	call   0x80483a0 <system@plt>
+   0x08048506 <+114>:	mov    eax,0x0
