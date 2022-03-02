@@ -1,0 +1,13 @@
+In this leve, the program ask the user to enter a username, if it is equal to 'dat_wil' then it asks for a password which should be 'admin'
+even if we enter the reauired values, the program do nothing (see source code),
+but we notice that if we enter the valid username then asking for password is not done well using gets;
+the size given to fgets is greater than the size of the buffer, so we can perform a buffer overflow attack
+
+we start by setting a string in the env variables and get it address
+export SHELL='cat /home/users/level02/.pass'
+and the we run this payload to make the program call system and cat the pass
+python -c "print 'dat_wil'+'C'*328 +'\xd0\xae\xe6\xf7'+'aaaa'+'\xb1\xd8\xff\xff'" | ./level01
+
+'dat_wil'+'C'*328 is because the first fgets requires 256 - 1 characters and the remaining characters are for overflowing the second buffer
+
+we don't care about where the program should continue after system so we just give 'aaaa'
