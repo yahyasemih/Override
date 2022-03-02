@@ -1,0 +1,14 @@
+In this level the program asks for a username and a password,
+if the password correspond to the next level pass then the program opens the shell
+otherwise it prints that the username does not have access
+
+to exploit this program we can use the fact the the username is directly printed by printf
+so we can do string format attack
+
+when we give ass username multiple %p formats we notice that at some points
+it starts to print those formats and also the content of the pass given by the user
+between them we have the content of the pass (in the source code we can see that
+first we have the username array then the pass array and after it the user pass)
+
+so all what we have to do is process what is between the username and the password
+and get the flag
