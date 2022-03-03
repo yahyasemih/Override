@@ -1,0 +1,6 @@
+In this level, we have most of the exploits disabled, so most probably we don't have to corrupt the binary but understand it instead
+After investigating the assembly using GDB, we see that the program ask for a number and do some test on it
+if the test passes then the program opens the shell
+the test takes the input and an other number (0x1337d00d) and give the difference between them to a decrypt function
+if they meet some requirement, pass a random number otherwise
+decrypt basically apply XOR between the number and chars of a string and if the result is 'Congratulations!' then the shell is opened

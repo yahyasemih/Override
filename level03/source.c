@@ -8,11 +8,16 @@ unsigned int get_unum() {
 }
 
 void decrypt(int num) {
-	// TODO
 	char str[] = {"Q}|u"
 				  "`sfg"
 				  "~sf{"
 				  "}|a3"};
+	int len = strlen(str);
+
+	for (int i = 0; i < len; i++) {
+		str[i] = str[i] ^ num;
+	}
+
 	if (strncmp("Congratulations!", str, 17) == 0) {
 		system("/bin/sh");
 	} else {
@@ -32,12 +37,6 @@ void test(int pass, int num) {
 		case 7: decrypt(num); break;
 		case 8: decrypt(num); break;
 		case 9: decrypt(num); break;
-		case 10: decrypt(num); break;
-		case 11: decrypt(num); break;
-		case 12: decrypt(num); break;
-		case 13: decrypt(num); break;
-		case 14: decrypt(num); break;
-		case 15: decrypt(num); break;
 		case 16: decrypt(num); break;
 		case 17: decrypt(num); break;
 		case 18: decrypt(num); break;
