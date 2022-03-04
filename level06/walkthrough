@@ -1,0 +1,26 @@
+In this level again almost everything is disabled, so most likely we have
+to undertsnad logic of the program to hack it
+
+the program asks for a username and a serial, if the serial match the username
+then we can open the shell
+
+the program takes the username and hash it based on a starting number that is
+generated from 3th character of the username, and then hash every character using
+some math operations and if the final result is equal to the given serial then we can open the shell
+
+level06@OverRide:~$ ./level06
+***********************************
+*		level06		  *
+***********************************
+-> Enter Login: yezzain
+***********************************
+***** NEW ACCOUNT DETECTED ********
+***********************************
+-> Enter Serial: 6234019
+Authenticated!
+$ cd ../level07
+$ cat .pass
+GbcPDRgsFK77LNnnuh7QyFYA2942Gp8yKj9KrWD8
+$
+
+[3]+  Stopped                 ./level06
