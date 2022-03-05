@@ -3,13 +3,13 @@
 #include <string.h>
 
 int main(int argc, char const *argv[]) {
-	char username[12];
-	char pass[5];
-	char userpass[12];
+	char username[100];
+	char pass[42];
+	char userpass[100];
 
-	memset(username, 12, 0);
-	memset(pass, 5, 0);
-	memset(userpass, 12, 0);
+	memset(username, 0, 100);
+	memset(pass, 0, 42);
+	memset(userpass, 0, 100);
 
 	FILE *f = NULL;
 	int ret = 0;

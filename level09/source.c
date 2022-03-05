@@ -16,7 +16,7 @@ void secret_backdoor() {
 
 void set_username(message *msg) {
 	char buff[128];
-	memset(buff, 128, 0);
+	memset(buff, 0, 128);
 	puts(">: Enter your username");
 	printf(">>: ");
 	fgets(buff, 128, stdin);
@@ -28,7 +28,7 @@ void set_username(message *msg) {
 
 void set_msg(message *msg) {
 	char buff[1024];
-	memset(buff, 1024, 0);
+	memset(buff, 0, 1024);
 	puts(">: Msg @Unix-Dude");
 	printf(">>: ");
 	fgets(buff, 1024, stdin);

@@ -5,9 +5,9 @@
 #include <signal.h>
 
 int main() {
-	char buff[156];
+	char buff[128];
 	pid_t pid = fork();
-	memset(buff, 0, 32);
+	memset(buff, 0, 128);
 	int stat = 0;
 	int trace = 0;
 	if (pid == 0) {

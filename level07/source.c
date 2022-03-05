@@ -43,10 +43,10 @@ int store_number(unsigned *data) { // ebp-0x8
 
 int main(int argc, char *argv[], char *env[]) {
 	for (int i = 0; argv[i] != 0; i++) {
-		memset(argv[i], strlen(argv[i]), 0);
+		memset(argv[i], 0, strlen(argv[i]));
 	}
 	for (int i = 0; argv[i] != 0; i++) {
-		memset(env[i], strlen(env[i]), 0);
+		memset(env[i], 0, strlen(env[i]));
 	}
 	int ret = 0;
 	char cmd[20] = {0};
