@@ -1,0 +1,32 @@
+In this level, the rogram asks for a username and welcomes it and then ask for a message to send
+When we analyse the binary to construct the source we notice that it defines a struct of:
+- msg : 140 char
+- username : 40
+- len : int (set initially to 140)
+
+also we notice that we the program calls set_username it copies a string from a buffer to the username field
+but instead of stoping at username[39] it also erase username[40] which is the starting of the len field
+
+so we can base our attack on that, we can give a number that will override the len and make us copy more than 140 characters using strncpy
+we try to find when the return address is erased, which happen after 200 characters
+
+we can make the 41th character 0xce (206) so that we can copy 200 random characters then the address of an unused function that call system (secret_backdoor)
+
+the function address is 0x000055555555488c so we can just copy 6 bytes and since the buffer is already zeroed we will have the correct address
+
+we can run our attack like this:
+- 127 character to fill the first fgets (41th should be 0xce)
+- 200 character before the return address
+- the 6 first bytes of secret_backdoor function
+- 817 character to fill second fgets (so that we finish 1023 character)
+- the command that will be read by secret_backdoor and ran with system
+
+~$ ./level09 <<< $(python -c "print '\xce'*127+'a'*200+'\x8c\x48\x55\x55\x55\x55'+'a'*817+'cat /home/users/end/.pass'")
+--------------------------------------------
+|   ~Welcome to l33t-m$n ~    v1337        |
+--------------------------------------------
+>: Enter your username
+>>: >: Welcome, �����������������������������������������>: Msg @Unix-Dude
+>>: >: Msg sent!
+j4AunAPDXaJxxWjYEUxpanmvSgRDV3tpA5BEaBuE
+Segmentation fault (core dumped)
